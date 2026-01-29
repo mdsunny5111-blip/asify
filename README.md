@@ -1,2 +1,73 @@
 # asify
 asify
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asify - Music Store</title>
+    <style>
+        :root { --green: #1DB954; --black: #121212; --grey: #181818; }
+        body { background-color: var(--black); color: white; font-family: sans-serif; margin: 0; padding-bottom: 100px; }
+        header { padding: 20px; background: black; text-align: center; border-bottom: 1px solid #333; }
+        h1 { color: var(--green); margin: 0; font-size: 28px; }
+        .search-bar { padding: 15px; }
+        input { width: 100%; padding: 12px; border-radius: 25px; border: none; background: #282828; color: white; }
+        .song-list { padding: 10px; }
+        .song-item { background: var(--grey); padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; }
+        .song-item:hover { border-color: var(--green); }
+        .play-btn { background: var(--green); border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        .player-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 1px solid #333; padding: 10px; text-align: center; }
+        audio { width: 90%; filter: invert(100%); }
+    </style>
+</head>
+<body>
+
+<header><h1>ASIFY</h1></header>
+
+<div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search 500+ songs..." onkeyup="searchSongs()">
+</div>
+
+<div class="song-list" id="songList">
+    </div>
+
+<div class="player-bar">
+    <p id="nowPlaying">Select a song to play</p>
+    <audio id="mainPlayer" controls src=""></audio>
+</div>
+
+<script>
+    // LIST YOUR SONGS HERE
+    const songs = [
+        { title: "First Song", artist: "Asify Artist", url: "https://your-link-to-song1.mp3" },
+        { title: "Second Song", artist: "Asify Artist", url: "https://your-link-to-song2.mp3" }
+    ];
+
+    function displaySongs(musicArray) {
+        const container = document.getElementById('songList');
+        container.innerHTML = musicArray.map(song => `
+            <div class="song-item">
+                <div><strong>${song.title}</strong><br><small>${song.artist}</small></div>
+                <button class="play-btn" onclick="play('${song.url}', '${song.title}')">PLAY</button>
+            </div>
+        `).join('');
+    }
+
+    function play(url, title) {
+        const audio = document.getElementById('mainPlayer');
+        document.getElementById('nowPlaying').innerText = "Now Playing: " + title;
+        audio.src = url;
+        audio.play();
+    }
+
+    function searchSongs() {
+        const term = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = songs.filter(s => s.title.toLowerCase().includes(term));
+        displaySongs(filtered);
+    }
+
+    displaySongs(songs);
+</script>
+</body>
+</html>
